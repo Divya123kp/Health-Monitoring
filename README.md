@@ -1,0 +1,137 @@
+# VITAL_CODE
+
+---
+
+## Overview
+
+`VITAL_CODE` is a **real‑time health‑monitoring dashboard** built with **Flask** and **Socket.IO**.  It ingests raw sensor data (IR, RED, Heart‑Rate, SpO₂) from a serial‑connected device, runs a suite of machine‑learning models (classical tree‑based models and LSTM‑GAN models) to predict vital signs, and raises alerts when abnormal values are detected.  Alerts are sent via **Telegram** and **Gmail**.
+
+The project demonstrates a full end‑to‑end pipeline:
+1. **Serial data acquisition** (optional, can be disabled).
+2. **Feature extraction** matching the training scripts.
+3. **Model inference** using pre‑trained models stored in `sensor_prediction_models/`.
+4. **Web UI** that visualises live predictions, historic readings and model performance.
+5. **Automatic alerting** based on a configurable 3‑in‑a‑row abnormal‑reading rule.
+
+---
+
+## Features
+
+- Live sensor streaming via a background thread.
+- Multiple model families (RandomForest, ExtraTrees, HistGradientBoosting, LSTM‑GAN) loaded automatically.
+- Heart‑rate stabiliser to smooth sudden spikes.
+- Configurable alert window and cool‑down periods.
+- Multi‑language support (i18n) for alerts and UI.
+- Docker‑friendly (no hard‑coded absolute paths).
+- Unit‑tests for the prediction pipeline (`train_sensor_models.py`, `predictor.py`).
+
+---
+
+## Architecture
+
+```
+VITAL_CODE/
+├─ app.py                 # Flask + Socket.IO entry point
+├─ config.py              # Loads .env secrets
+├─ alerts.py              # Telegram & Gmail alert builder
+├─ predictor.py           # Model loading & inference logic
+├─ database.py            # SQLite helper for readings & predictions
+├─ serial_reader.py       # Optional serial port reader (threaded)
+├─ static/                # CSS, JS, images
+│   ├─ style.css
+│   └─ app.js
+├─ templates/             # Jinja2 HTML templates (home, dashboard, …)
+├─ sensor_prediction_models/
+│   ├─ <model>.joblib    # Classical models
+│   ├─ <model>.keras     # LSTM models
+│   └─ training_metadata.json
+└─ ... (other utility scripts)
+```
+
+---
+
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository‑url>
+   cd VITAL_CODE
+   ```
+2. **Create a Python virtual environment** (recommended)
+   ```bash
+   python -m venv .venv
+   .\.venv\Scripts\activate   # on Windows
+   ```
+3. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+   *If a `requirements.txt` file is missing, the core dependencies are:* `flask`, `flask‑socketio`, `python‑dotenv`, `joblib`, `pandas`, `numpy`, `python‑telegram‑bot`, `sqlite3` (built‑in).
+4. **Configure environment variables**
+   - Copy the example file:
+     ```bash
+     copy .env.example .env
+     ```
+   - Edit `.env` and provide:
+     - `SECRET_KEY` (or let the app generate one).
+     - Telegram bot token & chat ID (`TELEGRAM_TOKEN`, `TELEGRAM_CHAT_ID`).
+     - Gmail credentials (`GMAIL_USER`, `GMAIL_PASS`).
+     - Any other secrets required by `config.py`.
+5. **(Optional) Install the pre‑trained models** – they are already present in `sensor_prediction_models/`.  If you replace them, keep the same file naming convention (`<model>.joblib` / `<model>.keras`).
+
+---
+
+## Running the Application
+
+```bash
+# Activate the virtual environment first if not already active
+python app.py
+```
+
+The server starts on `http://127.0.0.1:5000`.  Open that URL in a browser to view the dashboard.  Socket.IO will push live predictions to the page.
+
+### Serial Port
+- The default serial port is `COM8` (see `app.py`).  Change `SERIAL_PORT` / `SERIAL_BAUD` if your device uses a different configuration.
+- If no serial device is attached, the application still works with manually entered test data via the UI.
+
+---
+
+## Configuration
+
+All configurable values live in `.env` and are loaded by `config.py`.
+| Variable | Description |
+|----------|-------------|
+| `SECRET_KEY` | Flask session cookie secret. |
+| `TELEGRAM_TOKEN` | Bot token for Telegram alerts. |
+| `TELEGRAM_CHAT_ID` | Destination chat ID for alerts. |
+| `GMAIL_USER` / `GMAIL_PASS` | Credentials for Gmail SMTP. |
+| `ALERT_WINDOW` | Number of consecutive abnormal readings before an alert (default: 3). |
+| `ALERT_COOLDOWN` | Minimum seconds between alerts (default: 60). |
+| `MANUAL_COOLDOWN` | Cool‑down for manual UI test alerts (default: 5). |
+
+---
+
+## Testing & Development
+
+- **Unit tests** (if present) can be run with `pytest`.
+- To add a new model, drop the model file into `sensor_prediction_models/` and update `training_metadata.json` accordingly.
+- The Flask app can be run in debug mode by setting `FLASK_ENV=development` in `.env`.
+
+---
+
+## Contributing
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Ensure code follows existing style (PEP8, type hints where possible).
+4. Submit a pull request with a clear description of the change.
+
+---
+
+## License
+
+Specify the license under which this project is distributed (e.g., MIT, Apache‑2.0).  Add a `LICENSE` file at the repository root.
+
+---
+
+*Generated by Antigravity AI assistant.*
