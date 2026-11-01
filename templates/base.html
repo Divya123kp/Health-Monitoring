@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}VitalSense{% endblock %} · {{ _('title_suffix') }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&family=Noto+Sans+Kannada:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script>
+    window.LANG = {{ lang|tojson }};
+    window.I18N = {{ i18n_js|tojson }};
+    // T('key', {name: value}) -> translated text
+    window.T = (k, v) => { let s = (window.I18N[k] ?? k); if (v) for (const n in v) s = s.split('{' + n + '}').join(v[n]); return s; };
+  </script>
+  {% block head %}{% endblock %}
+</head>
+{% macro lang_switch() %}
+  <form method="post" action="{{ url_for('set_language') }}" class="lang-switch">
+    <input type="hidden" name="next" value="{{ request.full_path.rstrip('?') }}">
+    <label class="sr" for="langSel">{{ _('nav_language') }}</label>
+    <span class="globe" aria-hidden="true">🌐</span>
+    <select id="langSel" name="lang" onchange="this.form.submit()" aria-label="{{ _('nav_language') }}">
+      {% for code, label in LANGS.items() %}<option value="{{ code }}" {{ 'selected' if code==lang }}>{{ label }}</option>{% endfor %}
+    </select>
+  </form>
+{% endmacro %}
+<body class="{% block bodyclass %}{% endblock %}">
+  <div class="ambient"><i></i><i></i><i></i></div>
+
+  <nav class="nav">
+    <a href="{{ url_for('home') }}" class="brand"><span class="logo">♥</span> VitalSense</a>
+    <button class="nav-toggle" aria-label="menu" onclick="document.getElementById('nl').classList.toggle('open')">☰</button>
+    <div class="nav-links" id="nl">
+      <a href="{{ url_for('home') }}" class="{{ 'active' if request.endpoint=='home' }}">{{ _('nav_home') }}</a>
+      {% if user %}
+        <a href="{{ url_for('monitor') }}" class="{{ 'active' if request.endpoint=='monitor' }}">{{ _('nav_monitor') }}</a>
+        <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint=='dashboard' }}">{{ _('nav_lab') }}</a>
+        <div class="nav-user">
+          {{ lang_switch() }}
+          <span class="avatar" title="{{ user.full_name }}">{{ user.full_name[:1]|upper }}</span>
+          <a href="{{ url_for('logout') }}" class="btn btn-ghost btn-sm">{{ _('nav_logout') }}</a>
+        </div>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="{{ 'active' if request.endpoint=='login' }}">{{ _('nav_login') }}</a>
+        {{ lang_switch() }}
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">{{ _('nav_get_started') }}</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+  <div id="toasts"></div>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

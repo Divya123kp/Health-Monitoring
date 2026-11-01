@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block title %}{{ _('t_home') }}{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">{% endblock %}
+
+{% block content %}
+<!-- ================= FULL-SCREEN SLIDESHOW ================= -->
+<header class="hero" id="hero">
+  <div id="slides"></div>
+  <div class="counter" id="counter">01 / 05</div>
+  <div class="scroll-hint">{{ _('hero_counter_hint') }}</div>
+  <div class="hero-ui">
+    <div class="dots" id="dots"></div>
+    <div class="ctrls">
+      <button id="prev" aria-label="previous">←</button>
+      <button id="pp" aria-label="pause">❚❚</button>
+      <button id="next" aria-label="next">→</button>
+      <button id="fs" aria-label="fullscreen" title="Full screen">⛶</button>
+    </div>
+  </div>
+</header>
+
+<div class="stats reveal">
+  <div class="card stat"><b class="grad-text" data-count="{{ stats.readings }}">0</b><span>{{ _('stat_readings') }}</span></div>
+  <div class="card stat"><b class="grad-text" data-count="{{ stats.predictions }}">0</b><span>{{ _('stat_predictions') }}</span></div>
+  <div class="card stat"><b class="grad-text" data-count="8">0</b><span>{{ _('stat_models') }}</span></div>
+  <div class="card stat"><b class="grad-text" data-count="{{ stats.alerts }}">0</b><span>{{ _('stat_alerts') }}</span></div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<section class="sec" id="about">
+  <div class="sec-head reveal">
+    <span class="kicker">{{ _('about_kicker') }}</span>
+    <h2>{{ _('about_h')|safe }}</h2>
+    <p>{{ _('about_p')|safe }}</p>
+  </div>
+
+  <div class="pipeline">
+    <div class="card step reveal"><div class="ico">🔌</div><h3>{{ _('step1_h') }}</h3><p>{{ _('step1_p')|safe }}</p></div>
+    <div class="card step reveal"><div class="ico">🧹</div><h3>{{ _('step2_h') }}</h3><p>{{ _('step2_p')|safe }}</p></div>
+    <div class="card step reveal"><div class="ico">🧠</div><h3>{{ _('step3_h') }}</h3><p>{{ _('step3_p')|safe }}</p></div>
+    <div class="card step reveal"><div class="ico">🚨</div><h3>{{ _('step4_h') }}</h3><p>{{ _('step4_p')|safe }}</p></div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="sec" id="features">
+  <div class="sec-head reveal">
+    <span class="kicker">{{ _('feat_kicker') }}</span>
+    <h2>{{ _('feat_h')|safe }}</h2>
+  </div>
+  <div class="feat">
+    <div class="card reveal"><div class="badge">⚡</div><h3>{{ _('f1_h')|safe }}</h3><p>{{ _('f1_p') }}</p></div>
+    <div class="card reveal"><div class="badge">🧬</div><h3>{{ _('f2_h')|safe }}</h3><p>{{ _('f2_p') }}</p></div>
+    <div class="card reveal"><div class="badge">📲</div><h3>{{ _('f3_h')|safe }}</h3><p>{{ _('f3_p') }}</p></div>
+    <div class="card reveal"><div class="badge">🗄️</div><h3>{{ _('f4_h')|safe }}</h3><p>{{ _('f4_p') }}</p></div>
+    <div class="card reveal"><div class="badge">🔐</div><h3>{{ _('f5_h')|safe }}</h3><p>{{ _('f5_p') }}</p></div>
+    <div class="card reveal"><div class="badge">📊</div><h3>{{ _('f6_h')|safe }}</h3><p>{{ _('f6_p') }}</p></div>
+    <div class="card reveal"><div class="badge">🌐</div><h3>{{ _('f7_h')|safe }}</h3><p>{{ _('f7_p') }}</p></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="two">
+    <div class="sec-head reveal" style="margin:0">
+      <span class="kicker">{{ _('models_kicker') }}</span>
+      <h2>{{ _('models_h')|safe }}</h2>
+      <p>{{ _('models_p') }}</p>
+      <div class="models">
+        <span class="chip">RandomForest</span><span class="chip">ExtraTrees</span><span class="chip">HistGradientBoosting</span><span class="chip ok">LSTM</span>
+        <span class="chip warn">+ GAN</span><span class="chip">NoGAN</span>
+      </div>
+    </div>
+    <div class="card mock reveal">
+      <div class="card-title">{{ _('ranges_title') }}</div>
+      <div class="row"><span>{{ _('heart_beat') }}</span><b>40 – 89 {{ _('unit_bpm') }}</b></div>
+      <div class="row"><span>{{ _('oxygen_level') }}</span><b>90 – 100 %</b></div>
+      <div class="row"><span>{{ _('red_signal') }}</span><b>67,676 – 89,898</b></div>
+      <div class="row"><span>{{ _('ir_signal') }}</span><b>46,575 – 1,124,224</b></div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band reveal">
+  <h2>{{ _('cta_h')|safe }}</h2>
+  <p>{{ _('cta_p') }}</p>
+  <div class="cta" style="justify-content:center">
+    {% if user %}<a class="btn btn-primary" href="{{ url_for('monitor') }}">{{ _('cta_open') }}</a>
+    {% else %}<a class="btn btn-primary" href="{{ url_for('register') }}">{{ _('cta_create') }}</a>
+    <a class="btn btn-ghost" href="{{ url_for('login') }}">{{ _('cta_have') }}</a>{% endif %}
+  </div>
+</div>
+<footer>{{ _('footer')|safe }}</footer>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const ECG = `<svg viewBox="0 0 800 200" fill="none"><path class="ecg" d="M0 100 H140 L170 100 L190 40 L215 170 L240 100 H330 L350 80 L370 100 H500 L520 30 L545 180 L570 100 H800" stroke="url(#g)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#34f5c5"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs></svg>`;
+const LOGGED_IN = {{ 'true' if user else 'false' }};
+const COPY = [1,2,3,4,5].map(i => ({k: T('h'+i+'_k'), h: T('h'+i+'_h'), p: T('h'+i+'_p')}));
+const DUR = 6500;
+let imgs = [], cur = 0, timer = null, playing = true;
+const slidesEl = document.getElementById('slides'), dotsEl = document.getElementById('dots');
+
+function build(){
+  slidesEl.innerHTML = ''; dotsEl.innerHTML = '';
+  COPY.forEach((c,i)=>{
+    const s = document.createElement('div'); s.className='slide';
+    const bg = imgs.length
+      ? `<div class="bg" style="background-image:url('${imgs[i % imgs.length]}')"></div>`
+      : `<div class="art art-${i+1}"><div class="grid-bg"></div>${ECG}</div>`;
+    const cta = LOGGED_IN
+      ? `<a class="btn btn-primary" href="{{ url_for('monitor') }}">${T('cta_open')}</a>`
+      : `<a class="btn btn-primary" href="{{ url_for('register') }}">${T('hero_start')}</a><a class="btn btn-ghost" href="{{ url_for('login') }}">${T('nav_login')}</a>`;
+    s.innerHTML = `${bg}<div class="copy"><span class="kicker"><span class="dot live"></span>${c.k}</span><h1>${c.h}</h1><p>${c.p}</p><div class="cta">${cta}<a class="btn btn-ghost" href="#about">${T('hero_learn')}</a></div></div>`;
+    slidesEl.appendChild(s);
+    const d = document.createElement('button'); d.setAttribute('aria-label','slide '+(i+1));
+    d.style.setProperty('--dur', DUR+'ms'); d.onclick=()=>go(i,true); dotsEl.appendChild(d);
+  });
+  show(0);
+}
+function show(i){
+  cur = (i+COPY.length)%COPY.length;
+  [...slidesEl.children].forEach((s,j)=>s.classList.toggle('on',j===cur));
+  [...dotsEl.children].forEach((d,j)=>{ d.classList.remove('on'); if(j===cur){ void d.offsetWidth; d.classList.add('on'); }});
+  document.getElementById('counter').textContent = String(cur+1).padStart(2,'0')+' / '+String(COPY.length).padStart(2,'0');
+}
+function schedule(){ clearTimeout(timer); if(playing) timer=setTimeout(()=>go(cur+1),DUR); }
+function go(i,manual){ show(i); schedule(); }
+document.getElementById('next').onclick=()=>go(cur+1);
+document.getElementById('prev').onclick=()=>go(cur-1);
+document.getElementById('pp').onclick=e=>{
+  playing=!playing; e.target.textContent = playing?'\u275A\u275A':'\u25B6';
+  document.getElementById('hero').classList.toggle('paused',!playing);
+  if(playing) show(cur);
+  schedule();
+};
+document.getElementById('fs').onclick=()=>{
+  const el=document.getElementById('hero');
+  if(!document.fullscreenElement) (el.requestFullscreen||el.webkitRequestFullscreen).call(el); else document.exitFullscreen();
+};
+document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight') go(cur+1); if(e.key==='ArrowLeft') go(cur-1); });
+let sx=null; slidesEl.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+slidesEl.addEventListener('touchend',e=>{ if(sx===null) return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50) go(cur+(dx<0?1:-1)); sx=null; });
+
+fetch('/api/slides').then(r=>r.json()).catch(()=>[]).then(list=>{ imgs=list; build(); schedule(); });
+
+// scroll reveal + count-up
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const end=+el.dataset.count; let t0=null;
+  const step=ts=>{ t0=t0||ts; const p=Math.min((ts-t0)/1400,1); el.textContent=Math.round(end*(1-Math.pow(1-p,3))).toLocaleString(); if(p<1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+});
+</script>
+{% endblock %}

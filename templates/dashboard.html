@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ _('t_lab') }}{% endblock %}
+{% block head %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>{% endblock %}
+
+{% block content %}
+<main class="page">
+  <div class="page-head">
+    <div>
+      <h1>{{ _('lab_h')|safe }}</h1>
+      <p>{{ _('lab_p') }}</p>
+    </div>
+    <div class="head-right"><span class="chip ok" id="winner" style="display:none"></span></div>
+  </div>
+
+  <section class="bento">
+    <div class="card span-6"><h2>{{ _('lab_mae_h') }}</h2><div class="chart-box"><canvas id="maeChart"></canvas></div></div>
+    <div class="card span-6"><h2>{{ _('lab_acc_h') }}</h2><div class="chart-box"><canvas id="accChart"></canvas></div></div>
+    <div class="card span-12">
+      <h2>{{ _('lab_chan_h') }} <span class="chip" style="margin-left:auto;text-transform:none;letter-spacing:0">{{ _('lab_chan_chip')|safe }}</span></h2>
+      <div class="tbl-wrap"><table id="perfTable">
+        <thead><tr><th>{{ _('th_model') }}</th><th>{{ _('th_mae_ir') }}</th><th>{{ _('th_mae_red') }}</th><th>{{ _('th_mae_hr') }}</th><th>{{ _('th_mae_spo2') }}</th><th>{{ _('th_samples') }}</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="card span-12">
+      <h2>{{ _('lab_latest_h') }}</h2>
+      <div class="tbl-wrap" style="max-height:480px;overflow-y:auto"><table id="predTable">
+        <thead><tr><th>{{ _('th_id') }}</th><th>{{ _('th_model') }}</th><th>IR</th><th>RED</th><th>{{ _('heart_beat') }}</th><th>{{ _('oxygen_level') }}</th><th>{{ _('th_status') }}</th><th>{{ _('th_time') }}</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='dashboard.js') }}"></script>{% endblock %}

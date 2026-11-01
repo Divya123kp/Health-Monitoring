@@ -1,0 +1,154 @@
+{
+  "target_columns": [
+    "IR",
+    "RED",
+    "HR",
+    "SpO2"
+  ],
+  "relative_columns": [
+    "IR",
+    "RED"
+  ],
+  "sequence_length": 10,
+  "data_lo": {
+    "IR": 0,
+    "RED": 0,
+    "HR": 0,
+    "SpO2": 0
+  },
+  "data_hi": {
+    "IR": 1124224,
+    "RED": 89898,
+    "HR": 89,
+    "SpO2": 120
+  },
+  "normal_lo": {
+    "IR": 46575,
+    "RED": 67676,
+    "HR": 40,
+    "SpO2": 90
+  },
+  "normal_hi": {
+    "IR": 1124224,
+    "RED": 89898,
+    "HR": 89,
+    "SpO2": 100
+  },
+  "target_min": {
+    "IR": 0,
+    "RED": 0,
+    "HR": 0,
+    "SpO2": 0
+  },
+  "target_max": {
+    "IR": 1124224,
+    "RED": 89898,
+    "HR": 89,
+    "SpO2": 120
+  },
+  "noise_rel": {
+    "IR": 0.03,
+    "RED": 0.03,
+    "HR": 0.025,
+    "SpO2": 0.01
+  },
+  "noise_floor": {
+    "IR": 150.0,
+    "RED": 60.0,
+    "HR": 0.5,
+    "SpO2": 0.2
+  },
+  "tolerance_rel": {
+    "IR": 0.05,
+    "RED": 0.05
+  },
+  "tolerance_floor": {
+    "IR": 2500.0,
+    "RED": 800.0,
+    "HR": 3.0,
+    "SpO2": 2.0
+  },
+  "seeds": [
+    42,
+    53,
+    64
+  ],
+  "saved_models_from_seed": 42,
+  "algorithms": [
+    "RandomForest",
+    "ExtraTrees",
+    "HistGradientBoosting",
+    "LSTM"
+  ],
+  "variants": [
+    "No GAN",
+    "GAN"
+  ],
+  "best_model_mean_over_seeds": "HistGradientBoosting (GAN)",
+  "summary": {
+    "HistGradientBoosting (GAN)": {
+      "Tolerance_Accuracy_%": 85.473,
+      "Status_Accuracy_%": 99.667,
+      "Abnormal_Kept_%": 98.589,
+      "Normal_Kept_%": 99.799,
+      "NMAE_%": 1.564,
+      "R2": 0.985
+    },
+    "HistGradientBoosting (No GAN)": {
+      "Tolerance_Accuracy_%": 81.494,
+      "Status_Accuracy_%": 99.678,
+      "Abnormal_Kept_%": 98.47,
+      "Normal_Kept_%": 99.826,
+      "NMAE_%": 1.82,
+      "R2": 0.979
+    },
+    "LSTM (GAN)": {
+      "Tolerance_Accuracy_%": 76.14,
+      "Status_Accuracy_%": 97.665,
+      "Abnormal_Kept_%": 97.894,
+      "Normal_Kept_%": 97.627,
+      "NMAE_%": 2.092,
+      "R2": 0.973
+    },
+    "ExtraTrees (GAN)": {
+      "Tolerance_Accuracy_%": 72.456,
+      "Status_Accuracy_%": 99.538,
+      "Abnormal_Kept_%": 98.562,
+      "Normal_Kept_%": 99.656,
+      "NMAE_%": 2.503,
+      "R2": 0.958
+    },
+    "LSTM (No GAN)": {
+      "Tolerance_Accuracy_%": 70.764,
+      "Status_Accuracy_%": 97.802,
+      "Abnormal_Kept_%": 96.375,
+      "Normal_Kept_%": 97.996,
+      "NMAE_%": 2.497,
+      "R2": 0.955
+    },
+    "RandomForest (GAN)": {
+      "Tolerance_Accuracy_%": 66.584,
+      "Status_Accuracy_%": 98.833,
+      "Abnormal_Kept_%": 95.905,
+      "Normal_Kept_%": 99.21,
+      "NMAE_%": 2.928,
+      "R2": 0.942
+    },
+    "ExtraTrees (No GAN)": {
+      "Tolerance_Accuracy_%": 64.27,
+      "Status_Accuracy_%": 99.228,
+      "Abnormal_Kept_%": 97.86,
+      "Normal_Kept_%": 99.399,
+      "NMAE_%": 3.116,
+      "R2": 0.938
+    },
+    "RandomForest (No GAN)": {
+      "Tolerance_Accuracy_%": 58.503,
+      "Status_Accuracy_%": 98.529,
+      "Abnormal_Kept_%": 94.335,
+      "Normal_Kept_%": 99.063,
+      "NMAE_%": 3.555,
+      "R2": 0.918
+    }
+  }
+}

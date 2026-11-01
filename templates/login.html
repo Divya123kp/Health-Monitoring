@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ _('t_login') }}{% endblock %}
+{% block content %}
+<main class="auth">
+  <section class="auth-art">
+    <svg class="ecg-bg" viewBox="0 0 800 200" fill="none"><path d="M0 100 H140 L170 100 L190 40 L215 170 L240 100 H330 L350 80 L370 100 H500 L520 30 L545 180 L570 100 H800" stroke="url(#lg)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="ecg" style="animation:draw 3.2s linear infinite;stroke-dasharray:1400"/><defs><linearGradient id="lg" x1="0" x2="1"><stop stop-color="#34f5c5"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs></svg>
+    <h2>{{ _('login_art_h')|safe }}</h2>
+    <p>{{ _('login_art_p') }}</p>
+  </section>
+  <section class="auth-form">
+    <form class="auth-card" method="post" autocomplete="on">
+      <h1>{{ _('login_h1') }}</h1>
+      <p class="sub">{{ _('login_sub') }}</p>
+      {% if error %}<div class="err">{{ error }}</div>{% endif %}
+      <div class="field"><label for="identifier">{{ _('lbl_identifier') }}</label>
+        <input class="input" id="identifier" name="identifier" required autofocus autocomplete="username"></div>
+      <div class="field"><label for="password">{{ _('lbl_password') }}</label>
+        <div class="pw-wrap"><input class="input" id="password" name="password" type="password" required autocomplete="current-password">
+        <button type="button" onclick="const p=document.getElementById('password');p.type=p.type==='password'?'text':'password'">{{ _('btn_show') }}</button></div></div>
+      <label class="check"><input type="checkbox" name="remember"> {{ _('keep_signed') }}</label>
+      <button class="btn btn-primary" type="submit">{{ _('btn_login') }}</button>
+      <p class="auth-alt">{{ _('new_here') }} <a href="{{ url_for('register') }}">{{ _('create_account_link') }}</a></p>
+    </form>
+  </section>
+</main>
+{% endblock %}
